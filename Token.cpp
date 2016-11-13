@@ -8,6 +8,10 @@ Token::Token(const Token &obj) {
 	*this = obj;
 }
 
+Token::Token(const Type &token_type, const Data &data, const std::string &filename, int line) 
+	: _type(token_type), _data(data), _filename(filename), _line(line)
+{
+}
 Token::~Token(void) {
 
 }

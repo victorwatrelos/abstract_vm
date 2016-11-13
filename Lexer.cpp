@@ -35,13 +35,37 @@ void	Lexer::_addToken(std::string elem)
 	std::cout << "Elem: " << elem << std::endl;
 }
 
+Token	Lexer::_getToken(const Token::Type &type, const Data &data) const
+{
+	return Token(type, data, this->_filename, this->_currentLine);
+}
+
 void	Lexer::_endOfToken(void)
 {
 	if (this->_buffer.length() > 0)
 	{
 		this->_addToken(this->_buffer);
-		std::cout << "buff: " << this->_buffer << std::endl;
 		this->_buffer = "";
+	}
+}
+
+bool	Lexer::_isBracket(const char &c)
+{
+	if (c == '(' || c == ')')
+		return true;
+	return false;
+}
+
+void	Lexer::_addBracketToken(const char &c)
+{
+	if (c == '(') {
+		this->_lstToken.push_back(
+				this->_getToken(Token::Type::BRACKET, Token::Data::OPEN_BRACKET)
+				);
+	} else if (c == ')') {
+		this->_lstToken.push_back(
+				this->_getToken(Token::Type::BRACKET, Token::Data::CLOSE_BRACKET)
+				);
 	}
 }
 
@@ -51,12 +75,14 @@ void	Lexer::_processLine(const std::string &line)
 	{
 		if (Lexer::_isSeparator(i)) {
 			this->_endOfToken();
+		} else if (Lexer::_isBracket(i)) {
+			this->_addBracketToken(i);
+			this->_endOfToken();
 		} else {
 			this->_buffer += i;
 		}
-		std::cout << i;
 	}
-	std::cout << std::endl;
+	this->_endOfToken();
 }
 
 void	Lexer::_browseLine() {
