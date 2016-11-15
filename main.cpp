@@ -1,5 +1,6 @@
 #include "Lexer.hpp"
 #include <fstream>
+#include "Parser.hpp"
 
 int main(int argc, char **argv)
 {
@@ -12,5 +13,8 @@ int main(int argc, char **argv)
 	fs.open(argv[1], std::fstream::in);
 	Lexer	lexer(&fs);
 	lexer.lex();
+	lexer.disp();
+	Parser	parser;
+	parser.setTokenLst(lexer.getTokenLst());
 	return 0;
 }
