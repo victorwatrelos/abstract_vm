@@ -4,6 +4,7 @@ Lexer::Lexer(std::istream *ist)
 	: _ist(ist)
 {
 	this->_lstInstruction["add"] = Token::Data::INS_ADD;
+	this->_lstInstruction["push"] = Token::Data::INS_PUSH;
 	this->_lstKeyword["int8"] = Token::Data::KEYWORD_INT8;
 	this->_lstKeyword["int16"] = Token::Data::KEYWORD_INT16;
 	this->_lstKeyword["int32"] = Token::Data::KEYWORD_INT32;
@@ -58,6 +59,7 @@ bool	Lexer::_isKeyword(const std::string &elem)
 void	Lexer::_addInsToken(const std::string &elem)
 {
 	Token::Data		ins;
+
 	try {
 		ins = this->_lstInstruction.at(elem);
 		this->_lstToken.push_back(this->_getToken(Token::Type::INSTRUCTION, ins));
@@ -66,7 +68,7 @@ void	Lexer::_addInsToken(const std::string &elem)
 	}
 }
 
-const std::vector<Token>		&getTokenLst()
+const std::vector<Token>		&Lexer::getTokenLst()
 {
 	return this->_lstToken;
 }

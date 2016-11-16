@@ -7,8 +7,15 @@
 	class Token
 	{
 		public:
-			enum class Type {INSTRUCTION, BRACKET, KEYWORD, NUMBER_INT, NUMBER_FLOAT};
-			enum class Data {OPEN_BRACKET, CLOSE_BRACKET, INS_ADD, KEYWORD_INT32, KEYWORD_INT16, KEYWORD_INT8};
+			enum class Type {INSTRUCTION, BRACKET, KEYWORD, NUMBER_INT, NUMBER_FLOAT, EOL};
+			enum class Data {OPEN_BRACKET,
+							CLOSE_BRACKET,
+							INS_ADD,
+							INS_PUSH,
+							KEYWORD_INT32,
+							KEYWORD_INT16,
+							KEYWORD_INT8,
+							NONE};
 			Token(void);
 			Token(const Token &obj);
 			Token(const Type &token_type, const Data &data, const std::string &filename, int line);

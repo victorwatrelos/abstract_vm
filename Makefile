@@ -5,7 +5,11 @@ NAME_BIN= avm
 SRC= main.cpp \
 	 Token.cpp \
 	 Lexer.cpp \
-	 Parser.cpp
+	 Parser.cpp \
+	 OperandFactory.cpp \
+	 Instruction.cpp \
+	 Software.cpp \
+	 InstructionInfo.cpp
 
 OBJ= $(SRC:.cpp=.o)
 

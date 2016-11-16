@@ -41,6 +41,8 @@ std::string	Token::getDataStr(const Data &data)
 			return "Keyword int16";
 		case Data::KEYWORD_INT8:
 			return "Keyword int8";
+		case Data::NONE:
+			return "NONE";
 	};
 	return "Data Unknown";
 }
@@ -58,6 +60,8 @@ std::string	Token::getTypeStr(const Type &type)
 			return "Number integer";
 		case Type::NUMBER_FLOAT:
 			return "Number float";
+		case Type::EOL:
+			return "End Of Line";
 	};
 	return "Type Unknown";
 }

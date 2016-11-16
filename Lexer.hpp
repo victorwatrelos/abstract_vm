@@ -36,6 +36,7 @@ class Lexer
 		void				_addNumberIntToken(const std::string &elem);
 		void				_addNumberFloatToken(const std::string &elem);
 		void				_addKeywordToken(const std::string &elem);
+		void				_addEOL(void);
 		std::istream		*_ist = nullptr;
 		std::vector<Token>	_lstToken;
 		int					_currentLine = -1;
