@@ -43,8 +43,12 @@ class Lexer
 		std::string			_buffer = "";
 		std::string			_filename = "STDIN";
 		bool				_firstOfLine;
-		std::map<std::string, Token::Data>	_lstInstruction;
-		std::map<std::string, Token::Data>	_lstKeyword;
+
+		static std::map<std::string, Token::Data>		_getLstInstruction(void);
+		static std::map<std::string, Token::Data>		_getLstKeyword(void);
+
+		static const std::map<std::string, Token::Data>	_lstInstruction;
+		static const std::map<std::string, Token::Data>	_lstKeyword;
 		std::vector<std::string>	_errors;
 };
 #endif

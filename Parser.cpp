@@ -18,6 +18,8 @@ std::map<Token::Data, eOperandType>	Parser::create_map_op(void)
 	map[Token::Data::KEYWORD_INT8] = eOperandType::INT_8;
 	map[Token::Data::KEYWORD_INT16] = eOperandType::INT_16;
 	map[Token::Data::KEYWORD_INT32] = eOperandType::INT_32;
+	map[Token::Data::KEYWORD_FLOAT] = eOperandType::FLOAT;
+	map[Token::Data::KEYWORD_DOUBLE] = eOperandType::DOUBLE;
 	return map;
 }
 
@@ -27,6 +29,7 @@ std::map<Token::Data, Instruction::InsName>	Parser::create_map(void)
 
 	map[Token::Data::INS_ADD] = Instruction::InsName::ADD;
 	map[Token::Data::INS_PUSH] = Instruction::InsName::PUSH;
+	map[Token::Data::INS_DUMP] = Instruction::InsName::DUMP;
 	return map;
 }
 
@@ -38,19 +41,12 @@ void		Parser::setTokenLst(const std::vector<Token> &lstToken)
 	this->_tokenLst = lstToken;
 }
 
-void		Parser::_processIns(Token const &tok)
+IOperand const	*Parser::_getOpIns()
 {
-	Instruction::InsName	insName = this->_tokenDataToIns.at(tok.getData());
-	IOperand const			*op;
+	auto dist = std::distance(this->_currentPos, this->_tokenLst.end());
 	Token					paramToken;
 	Token					valueToken;
 
-	if (!InstructionInfo::hasParam(insName))
-	{
-		std::cout << "No paran" << std::endl;
-		return;
-	}
-	auto dist = std::distance(this->_currentPos, this->_tokenLst.end());
 	if (dist < 5)
 	{
 		std::cerr << "Not enouth token" << std::endl;
@@ -75,8 +71,18 @@ void		Parser::_processIns(Token const &tok)
 		std::cerr << "Not a number" << std::endl;
 		throw new std::exception;
 	}
+	return this->_factory.createOperand(Parser::_tokenDataToOp.at(paramToken.getData()), valueToken.getNumber());
+}
 
-	op = this->_factory.createOperand(Parser::_tokenDataToOp.at(paramToken.getData()), valueToken.getNumber());
+void		Parser::_processIns(Token const &tok)
+{
+	IOperand const			*op = nullptr;
+	Instruction::InsName	insName = this->_tokenDataToIns.at(tok.getData());
+
+	if (InstructionInfo::hasParam(insName))
+	{
+		op = this->_getOpIns();
+	}
 	Instruction		ins = Instruction(op, insName);
 	this->_prog.addIns(ins);
 }
@@ -102,3 +108,7 @@ Parser    &Parser::operator=(const Parser &p) {
 	return *this;
 }
 
+Software		&Parser::getSoftware(void)
+{
+	return this->_prog;
+}

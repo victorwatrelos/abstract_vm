@@ -3,12 +3,30 @@
 Lexer::Lexer(std::istream *ist)
 	: _ist(ist)
 {
-	this->_lstInstruction["add"] = Token::Data::INS_ADD;
-	this->_lstInstruction["push"] = Token::Data::INS_PUSH;
-	this->_lstKeyword["int8"] = Token::Data::KEYWORD_INT8;
-	this->_lstKeyword["int16"] = Token::Data::KEYWORD_INT16;
-	this->_lstKeyword["int32"] = Token::Data::KEYWORD_INT32;
 }
+
+std::map<std::string, Token::Data>			Lexer::_getLstInstruction(void)
+{
+	std::map<std::string, Token::Data>	map;
+	map["add"] = Token::Data::INS_ADD;
+	map["push"] = Token::Data::INS_PUSH;
+	map["dump"] = Token::Data::INS_DUMP;
+	return map;
+}
+
+std::map<std::string, Token::Data>			Lexer::_getLstKeyword(void)
+{
+	std::map<std::string, Token::Data>	map;
+	map["int8"] = Token::Data::KEYWORD_INT8;
+	map["int16"] = Token::Data::KEYWORD_INT16;
+	map["int32"] = Token::Data::KEYWORD_INT32;
+	map["float"] = Token::Data::KEYWORD_FLOAT;
+	map["double"] = Token::Data::KEYWORD_DOUBLE;
+	return map;
+}
+
+const std::map<std::string, Token::Data>	Lexer::_lstInstruction = Lexer::_getLstInstruction();
+const std::map<std::string, Token::Data>	Lexer::_lstKeyword = Lexer::_getLstKeyword();
 
 Lexer::Lexer(const Lexer &obj) {
 	*this = obj;

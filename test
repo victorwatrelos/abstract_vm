@@ -1,2 +1,8 @@
-push int8(100)
+push int8(20)
+push double(200.23132213213123213123)
 add
+dump
+push int8(20)
+push float(200.23132213213123213123)
+add
+dump

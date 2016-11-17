@@ -17,5 +17,6 @@ int main(int argc, char **argv)
 	Parser	parser;
 	parser.setTokenLst(lexer.getTokenLst());
 	parser.parse();
+	parser.getSoftware().exec();
 	return 0;
 }

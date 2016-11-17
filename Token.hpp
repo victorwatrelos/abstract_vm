@@ -12,6 +12,7 @@
 							CLOSE_BRACKET,
 							INS_ADD,
 							INS_PUSH,
+							INS_DUMP,
 							KEYWORD_INT32,
 							KEYWORD_INT16,
 							KEYWORD_INT8,

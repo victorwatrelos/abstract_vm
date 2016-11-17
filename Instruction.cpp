@@ -6,6 +6,7 @@ Instruction::ins_to_string_t			Instruction::_create_ins_to_string(void)
 
 	map[InsName::ADD] = "ADD";
 	map[InsName::PUSH] = "PUSH";
+	map[InsName::DUMP] = "DUMP";
 	return map;
 }
 
