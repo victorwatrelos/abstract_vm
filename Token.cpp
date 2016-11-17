@@ -1,7 +1,8 @@
 #include "Token.hpp"
 
-Token::Token(void) {
-	this->_type = Type::INSTRUCTION;
+Token::Token(void) 
+	: _type(Type::INSTRUCTION), _data(Data::NONE)
+{
 }
 
 Token::Token(const Token &obj) {
@@ -13,17 +14,21 @@ Token::Token(const Type &token_type, const Data &data, const std::string &filena
 {
 }
 
-Token::Token(const int number, const std::string &filename, int line)
-	: _type(Type::NUMBER_INT), _filename(filename), _line(line), _numberInt(number)
-{
-}
-Token::Token(const double number, const std::string &filename, int line)
-	: _type(Type::NUMBER_FLOAT), _filename(filename), _line(line), _numberFloat(number)
+Token::Token(const std::string &number, const std::string &filename, int line)
+	: _type(Type::NUMBER), _data(Data::NONE), _filename(filename), _line(line), _number(number)
 {
 }
 
 Token::~Token(void) {
 
+}
+
+std::string const	&Token::getNumber(void) const
+{
+	if (this->_type != Type::NUMBER)
+		throw new std::exception;
+	std::cout << this->_number << std::endl;
+	return this->_number;
 }
 
 std::string	Token::getDataStr(const Data &data)
@@ -56,10 +61,8 @@ std::string	Token::getTypeStr(const Type &type)
 			return "Bracket";
 		case Type::KEYWORD:
 			return "Keyword";
-		case Type::NUMBER_INT:
-			return "Number integer";
-		case Type::NUMBER_FLOAT:
-			return "Number float";
+		case Type::NUMBER:
+			return "Number";
 		case Type::EOL:
 			return "End Of Line";
 	};
@@ -97,6 +100,8 @@ Token    &Token::operator=(const Token &p) {
 	this->_type = p.getType();
 	this->_data = p.getData();
 	this->_filename = p.getFilename();
+	if (p.getType() == Type::NUMBER)
+		this->_number = p.getNumber();
 	return *this;
 }
 

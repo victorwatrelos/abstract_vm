@@ -84,7 +84,7 @@ void	Lexer::_addNumberFloatToken(const std::string &elem)
 {
 	try {
 		double res = std::stod(elem);
-		this->_lstToken.push_back(Token(res, this->_filename, this->_currentLine));
+		this->_lstToken.push_back(Token(elem, this->_filename, this->_currentLine));
 	} catch (const std::invalid_argument &e) {
 		std::cerr << "Invalid number: " << elem << std::endl;
 	} catch (const std::out_of_range &e) {
@@ -97,8 +97,7 @@ void	Lexer::_addNumberIntToken(const std::string &elem)
 	int		res;
 
 	try {
-		res = std::stoi(elem);
-		this->_lstToken.push_back(Token(res, this->_filename, this->_currentLine));
+		this->_lstToken.push_back(Token(elem, this->_filename, this->_currentLine));
 	} catch (const std::invalid_argument &e) {
 		std::cerr << "Invalid number: " << elem << std::endl;
 	} catch (const std::out_of_range &e) {

@@ -11,6 +11,16 @@ Parser::~Parser(void) {
 
 }
 
+std::map<Token::Data, eOperandType>	Parser::create_map_op(void)
+{
+	std::map<Token::Data, eOperandType>	map;
+
+	map[Token::Data::KEYWORD_INT8] = eOperandType::INT_8;
+	map[Token::Data::KEYWORD_INT16] = eOperandType::INT_16;
+	map[Token::Data::KEYWORD_INT32] = eOperandType::INT_32;
+	return map;
+}
+
 std::map<Token::Data, Instruction::InsName>	Parser::create_map(void)
 {
 	std::map<Token::Data, Instruction::InsName>	map;
@@ -21,6 +31,7 @@ std::map<Token::Data, Instruction::InsName>	Parser::create_map(void)
 }
 
 const std::map<Token::Data, Instruction::InsName>	Parser::_tokenDataToIns = Parser::create_map();
+const std::map<Token::Data, eOperandType>			Parser::_tokenDataToOp = Parser::create_map_op();
 
 void		Parser::setTokenLst(const std::vector<Token> &lstToken)
 {
@@ -29,13 +40,45 @@ void		Parser::setTokenLst(const std::vector<Token> &lstToken)
 
 void		Parser::_processIns(Token const &tok)
 {
-	Instruction		ins;
 	Instruction::InsName	insName = this->_tokenDataToIns.at(tok.getData());
+	IOperand const			*op;
+	Token					paramToken;
+	Token					valueToken;
 
-	if (!InstructionInfo::has_param(insName))
+	if (!InstructionInfo::hasParam(insName))
 	{
-		//this->_program.addIns(Instruction(token //TODO THERE
+		std::cout << "No paran" << std::endl;
+		return;
 	}
+	auto dist = std::distance(this->_currentPos, this->_tokenLst.end());
+	if (dist < 5)
+	{
+		std::cerr << "Not enouth token" << std::endl;
+		throw new std::exception;
+	}
+	this->_currentPos++;
+	paramToken = *this->_currentPos;
+	if (paramToken.getType() != Token::Type::KEYWORD)
+	{
+		std::cerr << "Not a number identifier" << std::endl;
+		throw new std::exception;
+	}
+	if ((*(this->_currentPos + 1)).getData() != Token::Data::OPEN_BRACKET
+			|| (*(this->_currentPos + 3)).getData() != Token::Data::CLOSE_BRACKET)
+	{
+		std::cerr << "Bad bracket" << std::endl;
+		throw new std::exception;
+	}
+	valueToken = *(this->_currentPos + 2);
+	if (valueToken.getType() != Token::Type::NUMBER)
+	{
+		std::cerr << "Not a number" << std::endl;
+		throw new std::exception;
+	}
+
+	op = this->_factory.createOperand(Parser::_tokenDataToOp.at(paramToken.getData()), valueToken.getNumber());
+	Instruction		ins = Instruction(op, insName);
+	this->_prog.addIns(ins);
 }
 
 void		Parser::parse(void)
