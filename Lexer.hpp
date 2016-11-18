@@ -2,6 +2,7 @@
 # define LEXER
 
 # include "Token.hpp"
+# include "LexerError.hpp"
 # include <string>
 # include <iostream>
 # include <vector>
@@ -43,6 +44,7 @@ class Lexer
 		std::string			_buffer = "";
 		std::string			_filename = "STDIN";
 		bool				_firstOfLine;
+		bool				_has_error = false;
 
 		static std::map<std::string, Token::Data>		_getLstInstruction(void);
 		static std::map<std::string, Token::Data>		_getLstKeyword(void);

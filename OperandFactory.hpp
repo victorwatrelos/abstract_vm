@@ -2,7 +2,9 @@
 # define OPERANDFACTORY_HPP
 
 # include <map>
+# include <limits>
 # include "IOperand.hpp"
+# include "AvmOverflowError.hpp"
 
 class OperandFactory
 {

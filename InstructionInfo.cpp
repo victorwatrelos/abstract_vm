@@ -5,6 +5,7 @@ std::map<Instruction::InsName, bool> InstructionInfo::create_has_param()
 	std::map<Instruction::InsName, bool>	map;
 	map[Instruction::InsName::ADD] = false;
 	map[Instruction::InsName::PUSH] = true;
+	map[Instruction::InsName::DUMP] = false;
 	return map;
 }
 

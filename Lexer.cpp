@@ -82,7 +82,7 @@ void	Lexer::_addInsToken(const std::string &elem)
 		ins = this->_lstInstruction.at(elem);
 		this->_lstToken.push_back(this->_getToken(Token::Type::INSTRUCTION, ins));
 	} catch (const std::out_of_range &e) {
-		std::cerr << "What is " << elem << std::endl;
+		throw LexerError("Symbole: " + elem + " not recognize", this->_currentLine);
 	}
 }
 
@@ -104,9 +104,9 @@ void	Lexer::_addNumberFloatToken(const std::string &elem)
 		double res = std::stod(elem);
 		this->_lstToken.push_back(Token(elem, this->_filename, this->_currentLine));
 	} catch (const std::invalid_argument &e) {
-		std::cerr << "Invalid number: " << elem << std::endl;
+		throw LexerError("Invalid number: " + elem, this->_currentLine);
 	} catch (const std::out_of_range &e) {
-		std::cerr << "Number overflow: " << elem << std::endl;
+		throw LexerError("Number overflow: " + elem, this->_currentLine);
 	}
 }
 
@@ -117,9 +117,9 @@ void	Lexer::_addNumberIntToken(const std::string &elem)
 	try {
 		this->_lstToken.push_back(Token(elem, this->_filename, this->_currentLine));
 	} catch (const std::invalid_argument &e) {
-		std::cerr << "Invalid number: " << elem << std::endl;
+		throw LexerError("Invalid number: " + elem, this->_currentLine);
 	} catch (const std::out_of_range &e) {
-		std::cerr << "Number overflow: " << elem << std::endl;
+		throw LexerError("Number overflow: " + elem, this->_currentLine);
 	}
 }
 
@@ -129,13 +129,12 @@ void	Lexer::_addKeywordToken(const std::string &elem)
 		auto data = this->_lstKeyword.at(elem);
 		this->_lstToken.push_back(this->_getToken(Token::Type::KEYWORD, data));
 	} catch (const std::out_of_range &e) {
-		std::cerr << "Keyword not recognise: " << elem << std::endl;
+		throw LexerError("Keyword not recognise: " + elem, this->_currentLine);
 	}
 }
 
 void	Lexer::_addToken(const std::string &elem)
 {
-	std::cout << "Elem: " << elem << std::endl;
 	if (this->_firstOfLine)
 	{
 		this->_addInsToken(elem);
@@ -204,14 +203,24 @@ void	Lexer::_processLine(const std::string &line)
 	this->_firstOfLine = true;
 	for (auto i : line)
 	{
-		if (Lexer::_isSeparator(i)) {
-			this->_endOfToken();
-		} else if (Lexer::_isBracket(i)) {
-			this->_endOfToken();
-			this->_addBracketToken(i);
-			this->_endOfToken();
-		} else {
-			this->_buffer += i;
+		try {
+			if (i == ';')
+			{
+				this->_endOfToken();
+				return ;
+			}
+			if (Lexer::_isSeparator(i)) {
+				this->_endOfToken();
+			} else if (Lexer::_isBracket(i)) {
+				this->_endOfToken();
+				this->_addBracketToken(i);
+				this->_endOfToken();
+			} else {
+				this->_buffer += i;
+			}
+		} catch (LexerError &e) {
+			std::cerr << e.what() << std::endl;
+			throw LexerError("Lexical error(s)", -1);
 		}
 	}
 	this->_endOfToken();
@@ -223,7 +232,6 @@ void	Lexer::_browseLine() {
 	this->_currentLine = 1;
 	while (std::getline(*this->_ist, line))
 	{
-		std::cout << "Line: " << line << std::endl;
 		this->_processLine(line);
 		this->_currentLine++;
 	}

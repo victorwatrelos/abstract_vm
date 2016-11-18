@@ -3,6 +3,7 @@
 
 # include <vector>
 # include "Instruction.hpp"
+# include "AvmRuntimeException.hpp"
 # include <limits>
 
 typedef std::numeric_limits< double > dbl;

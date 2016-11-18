@@ -9,7 +9,11 @@ SRC= main.cpp \
 	 OperandFactory.cpp \
 	 Instruction.cpp \
 	 Software.cpp \
-	 InstructionInfo.cpp
+	 InstructionInfo.cpp \
+	 AvmRuntimeException.cpp \
+	 AvmOverflowError.cpp \
+	 LexerError.cpp \
+	 LineException.cpp \
 
 OBJ= $(SRC:.cpp=.o)
 

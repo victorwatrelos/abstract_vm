@@ -27,7 +27,6 @@ std::string const	&Token::getNumber(void) const
 {
 	if (this->_type != Type::NUMBER)
 		throw new std::exception;
-	std::cout << this->_number << std::endl;
 	return this->_number;
 }
 

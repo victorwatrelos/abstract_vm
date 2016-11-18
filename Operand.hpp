@@ -16,36 +16,41 @@ T	strTo(std::string const &str)
 template <>
 float	strTo(std::string const &str)
 {
-	std::cout << "FLOAT" << str << std::endl;
 	return std::stof(str);
 }
 
 template <>
 double	strTo(std::string const &str)
 {
-	std::cout << "Double" << str << std::endl;
 	return std::stod(str);
 }
-
 
 template <typename T>
 class Operand: public IOperand
 {
 	public:
-		Operand(void);
-		Operand(const Operand &obj);
-		Operand&operator=(const Operand &p);
+		Operand(void) {}
+		Operand(const Operand &obj) 
+		{
+			*this = obj;
+		}
 		virtual ~Operand(void)
 		{
 		}
 		Operand(int precision, T value, const OperandFactory *factory, eOperandType type)
 			: _precision(precision), _value(value), _type(type), _factory(factory), _strVal(this->_toString(value))
 		{
-			std::cout << "there val: " << static_cast<int>(value) << "|" << std::endl;
 		}
 		T		getValue(void) const
 		{
 			return this->_value;
+		}
+		Operand &operator=(const Operand &p)
+		{
+			this->_type = p.getType();
+			this->_precision = p.getPrecision();
+			this->_value = p.getValue();
+			this->_strVal = this->_toString(this->_value);
 		}
 		IOperand const *operator+(IOperand const &rhs) const
 		{
@@ -105,7 +110,7 @@ class Operand: public IOperand
 		T		_value;
 		eOperandType	_type;
 		const OperandFactory	*_factory;
-		std::string		_strVal;
+		const std::string		_strVal;
 		std::string		_toString(T val) const
 		{
 			std::stringstream ss;
@@ -114,6 +119,15 @@ class Operand: public IOperand
 			return ss.str();
 		}
 };
+
+template	<>
+inline std::string		Operand<int8_t>::_toString(int8_t val) const
+{
+	std::stringstream ss;
+
+	ss << static_cast<int16_t>(val);
+	return ss.str();
+}
 
 template <typename T>
 T	floating_modulo(T lhs, std::string rhs)

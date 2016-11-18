@@ -40,34 +40,80 @@ IOperand const * OperandFactory::createOperand( eOperandType type, std::string c
 
 IOperand const *	OperandFactory::_createInt8Op(const std::string &val) const
 {
-	std::cout << "VAL IN: " << val << "|" << std::endl;
-	std::cout << "Val after: " << std::stoi(val) << std::endl;
-	return new Operand<int8_t>(3, std::stoi(val), this, eOperandType::INT_8);
+	int		res;
+
+	try {
+		res = std::stoi(val);
+	} catch (std::out_of_range &e) {
+		throw AvmOverflowError("Int 8: " + val);
+	}
+	if (res > std::numeric_limits<int8_t>::max()
+			|| res < std::numeric_limits<int8_t>::min())
+	{
+		throw AvmOverflowError("Int 8: " + val);
+	}
+	return new Operand<int8_t>(3, res, this, eOperandType::INT_8);
 }
 
 IOperand const *	OperandFactory::_createInt16Op(const std::string &val) const
 {
-	std::cout << "VAL IN: " << val << "|" << std::endl;
-	return new Operand<int16_t>(5, std::stoi(val), this, eOperandType::INT_16);
+	int		res;
+
+	try {
+		res = std::stoi(val);
+	} catch (std::out_of_range &e) {
+		throw AvmOverflowError("Int 16: " + val);
+	}
+	if (res > std::numeric_limits<int16_t>::max()
+			|| res < std::numeric_limits<int16_t>::min())
+	{
+		std::cout << std::numeric_limits<int16_t>::min() << "MAX" << std::endl;
+		throw AvmOverflowError("Int 16: " + val);
+	}
+	return new Operand<int16_t>(5, res, this, eOperandType::INT_16);
 }
 
 IOperand const *	OperandFactory::_createInt32Op(const std::string &val) const
 {
-	std::cout << "VAL IN: " << val << "|" << std::endl;
-	return new Operand<int32_t>(10, std::stoi(val), this, eOperandType::INT_32);
+	int		res;
+
+	try {
+		res = std::stoi(val);
+	} catch (std::out_of_range &e) {
+		throw AvmOverflowError("Int 32: " + val);
+	}
+	if (res > std::numeric_limits<int32_t>::max()
+			|| res < std::numeric_limits<int32_t>::min())
+	{
+		throw AvmOverflowError("Int 32: " + val);
+	}
+	return new Operand<int32_t>(10, res, this, eOperandType::INT_32);
 }
 
 IOperand const *	OperandFactory::_createFloatOp(const std::string &val) const
 {
+	float		res;
+
+	try {
+		res = std::stof(val);
+	} catch (std::out_of_range &e) {
+		throw AvmOverflowError("Float: " + val);
+	}
+
 	int	precision = std::numeric_limits< float >::max_digits10;
-	std::cout << "VAL FO: " << val << "|" << std::endl;
-	return new Operand<float>(precision, std::stof(val), this, eOperandType::FLOAT);
+	return new Operand<float>(precision, res, this, eOperandType::FLOAT);
 }
 
 IOperand const *	OperandFactory::_createDoubleOp(const std::string &val) const
 {
-	int	precision = std::numeric_limits< double>::max_digits10;
-	std::cout << "VAL DO: " << val << "|" << std::endl;
-	return new Operand<double>(precision, std::stod(val), this, eOperandType::DOUBLE);
-}
+	double		res;
 
+	try {
+		res = std::stod(val);
+	} catch (std::out_of_range &e) {
+		throw AvmOverflowError("Double: " + val);
+	}
+
+	int	precision = std::numeric_limits< double>::max_digits10;
+	return new Operand<double>(precision, res, this, eOperandType::DOUBLE);
+}

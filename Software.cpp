@@ -59,7 +59,7 @@ void	Software::_add(Instruction const &ins)
 	if (this->_stack.size() < 2)
 	{
 		std::cerr << "Add not enough item on stack" << std::endl;
-		throw new std::exception;
+		throw AvmRuntimeException("Add: not enough item on stack");
 	}
 	rhs = this->_stack.back();
 	this->_stack.pop_back();
