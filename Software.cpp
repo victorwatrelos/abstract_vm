@@ -55,6 +55,8 @@ void		Software::exec(void)
 			std::cerr << "Runtime exception - Program not finished with exit instruction" << std::endl;
 	} catch (AvmRuntimeException &e) {
 		std::cerr << e.what() << std::endl;
+	} catch (AvmOverflowError &e) {
+		std::cerr << e.what() << std::endl;
 	}
 }
 

@@ -15,6 +15,7 @@ SRC= main.cpp \
 	 LexerError.cpp \
 	 ParserError.cpp \
 	 LineException.cpp \
+	 STDInReader.cpp
 
 OBJ= $(SRC:.cpp=.o)
 

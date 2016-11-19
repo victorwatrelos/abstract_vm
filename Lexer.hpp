@@ -19,7 +19,6 @@ class Lexer
 		virtual ~Lexer(void);
 		std::istream	*getIst() const;
 		void			lex();
-		void			disp() const;
 		bool			hasError(void) const;
 		const std::vector<Token>	&getTokenLst();
 		static bool 			isDigits(const std::string &str);

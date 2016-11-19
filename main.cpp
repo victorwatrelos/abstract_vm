@@ -1,21 +1,25 @@
 #include "Lexer.hpp"
-#include <fstream>
 #include "Parser.hpp"
+# include "STDInReader.hpp"
+#include <fstream>
 
 int main(int argc, char **argv)
 {
 	bool parserError, lexerError;
+	STDInReader		reader;
+	std::ifstream	*fs;
 
-	std::fstream	fs;
 	if (argc < 2)
 	{
-		std::cerr << "Failure" << std::endl;
-		return 1;
+		reader.read();
+	} else {
+		fs = new std::ifstream();
+		fs->open(argv[1], std::fstream::in);
 	}
-	fs.open(argv[1], std::fstream::in);
-	Lexer	lexer(&fs);
+	std::istream	*is = (argc < 2) ? reader.getIStream() : fs;
+
+	Lexer	lexer(is);
 	lexer.lex();
-	lexer.disp();
 	lexerError = lexer.hasError();
 	Parser	parser;
 	parser.setTokenLst(lexer.getTokenLst());

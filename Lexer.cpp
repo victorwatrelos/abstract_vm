@@ -66,17 +66,6 @@ bool	Lexer::hasError(void) const
 	return this->_hasError;
 }
 
-void	Lexer::disp(void) const
-{
-	for (auto err : this->_errors)
-	{
-		std::cout << err << std::endl;
-	}
-	for (auto token : this->_lstToken)
-	{
-		token.disp();
-	}
-}
 bool	Lexer::_isKeyword(const std::string &elem)
 {
 	try {
@@ -213,30 +202,31 @@ void	Lexer::_addBracketToken(const char &c)
 
 void	Lexer::_processLine(const std::string &line)
 {
-	this->_firstOfLine = true;
-	for (auto i : line)
-	{
-		try {
-			if (i == ';')
-			{
-				this->_endOfToken();
-				return ;
-			}
-			if (Lexer::_isSeparator(i)) {
-				this->_endOfToken();
-			} else if (Lexer::_isBracket(i)) {
-				this->_endOfToken();
-				this->_addBracketToken(i);
-				this->_endOfToken();
-			} else {
-				this->_buffer += i;
-			}
-		} catch (LexerError &e) {
-			std::cerr << e.what() << std::endl;
-			this->_hasError = true;
+	try {
+		this->_firstOfLine = true;
+		for (auto i : line)
+		{
+				if (i == ';')
+				{
+					this->_endOfToken();
+					return ;
+				}
+				if (Lexer::_isSeparator(i)) {
+					this->_endOfToken();
+				} else if (Lexer::_isBracket(i)) {
+					this->_endOfToken();
+					this->_addBracketToken(i);
+					this->_endOfToken();
+				} else {
+					this->_buffer += i;
+				}
 		}
+		this->_endOfToken();
+	} catch (LexerError &e) {
+		std::cerr << e.what() << std::endl;
+		this->_hasError = true;
+		this->_buffer = "";
 	}
-	this->_endOfToken();
 }
 
 void	Lexer::_browseLine() {

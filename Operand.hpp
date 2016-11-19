@@ -119,7 +119,7 @@ class Operand: public IOperand
 		{
 			std::stringstream ss;
 
-			ss << std::fixed << std::setprecision(this->_precision) << val;
+			ss << std::fixed << std::setprecision(this->_precision - 3) << val;
 			return ss.str();
 		}
 };

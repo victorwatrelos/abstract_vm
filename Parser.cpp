@@ -124,6 +124,9 @@ void		Parser::parse(void)
 				std::cerr << e.what() << std::endl;
 				this->_hasError = true;
 			}
+		} catch (AvmOverflowError &e) {
+			std::cerr << e.what() << std::endl;
+			this->_hasError = true;
 		}
 	}
 	this->_prog.disp();
