@@ -6,6 +6,14 @@ std::map<Instruction::InsName, bool> InstructionInfo::create_has_param()
 	map[Instruction::InsName::ADD] = false;
 	map[Instruction::InsName::PUSH] = true;
 	map[Instruction::InsName::DUMP] = false;
+	map[Instruction::InsName::POP] = false;
+	map[Instruction::InsName::ASSERT] = true;
+	map[Instruction::InsName::SUB] = false;
+	map[Instruction::InsName::MUL] = false;
+	map[Instruction::InsName::DIV] = false;
+	map[Instruction::InsName::MOD] = false;
+	map[Instruction::InsName::PRINT] = false;
+	map[Instruction::InsName::EXIT] = false;
 	return map;
 }
 

@@ -9,7 +9,7 @@
 class Instruction
 {
 	public:
-		enum class InsName {ADD, PUSH, DUMP};
+		enum class InsName {ADD, PUSH, DUMP, POP, ASSERT, SUB, MUL, DIV, MOD, PRINT, EXIT};
 		typedef std::map<InsName, std::string>	ins_to_string_t;
 		Instruction(void);
 		Instruction(IOperand const *param, InsName const &ins, int line);

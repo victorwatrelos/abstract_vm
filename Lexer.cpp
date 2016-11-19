@@ -11,6 +11,14 @@ std::map<std::string, Token::Data>			Lexer::_getLstInstruction(void)
 	map["add"] = Token::Data::INS_ADD;
 	map["push"] = Token::Data::INS_PUSH;
 	map["dump"] = Token::Data::INS_DUMP;
+	map["pop"] = Token::Data::INS_POP;
+	map["assert"] = Token::Data::INS_ASSERT;
+	map["sub"] = Token::Data::INS_SUB;
+	map["mul"] = Token::Data::INS_MUL;
+	map["div"] = Token::Data::INS_DIV;
+	map["mod"] = Token::Data::INS_MOD;
+	map["print"] = Token::Data::INS_PRINT;
+	map["exit"] = Token::Data::INS_EXIT;
 	return map;
 }
 

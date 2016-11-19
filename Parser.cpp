@@ -30,6 +30,14 @@ std::map<Token::Data, Instruction::InsName>	Parser::create_map(void)
 	map[Token::Data::INS_ADD] = Instruction::InsName::ADD;
 	map[Token::Data::INS_PUSH] = Instruction::InsName::PUSH;
 	map[Token::Data::INS_DUMP] = Instruction::InsName::DUMP;
+	map[Token::Data::INS_POP] = Instruction::InsName::POP;
+	map[Token::Data::INS_ASSERT] = Instruction::InsName::ASSERT;
+	map[Token::Data::INS_SUB] = Instruction::InsName::SUB;
+	map[Token::Data::INS_MUL] = Instruction::InsName::MUL;
+	map[Token::Data::INS_DIV] = Instruction::InsName::DIV;
+	map[Token::Data::INS_MOD] = Instruction::InsName::MOD;
+	map[Token::Data::INS_PRINT] = Instruction::InsName::PRINT;
+	map[Token::Data::INS_EXIT] = Instruction::InsName::EXIT;
 	return map;
 }
 
@@ -81,7 +89,7 @@ void		Parser::_processIns(Token const &tok)
 	{
 		op = this->_getOpIns(tok.getLine());
 	}
-   ins = Instruction(op, insName, tok.getLine());
+	ins = Instruction(op, insName, tok.getLine());
 	this->_prog.addIns(ins);
 }
 

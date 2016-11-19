@@ -79,19 +79,23 @@ class Operand: public IOperand
 		}
 		IOperand const *operator/(IOperand const &rhs) const
 		{
+			IOperand const 	*tmp;
 			if (rhs.getType() > this->_type)
 			{
-				return rhs / *this;
+				tmp = this->_factory->createOperand(rhs.getType(), this->_strVal);
+				return *tmp / rhs;
 			}
-			return this->_factory->createOperand(this->_type, this->_toString((strTo<T>(rhs.toString()) / this->_value)));
+			return this->_factory->createOperand(this->_type, this->_toString(this->_value / strTo<T>(rhs.toString())));
 		}
 		IOperand const *operator%(IOperand const &rhs) const
 		{
+			IOperand const 	*tmp;
 			if (rhs.getType() > this->_type)
 			{
-				return rhs % *this;
+				tmp = this->_factory->createOperand(rhs.getType(), this->_strVal);
+				return *tmp % rhs;
 			}
-			return this->_factory->createOperand(this->_type, this->_toString((strTo<T>(rhs.toString()) % this->_value)));
+			return this->_factory->createOperand(this->_type, this->_toString((this->_value % strTo<T>(rhs.toString()))));
 		}
 		std::string const	&toString(void) const
 		{
@@ -138,12 +142,24 @@ T	floating_modulo(T lhs, std::string rhs)
 template <>
 inline IOperand const *Operand<float>::operator%(IOperand const &rhs) const
 {
+	IOperand const 	*tmp;
+	if (rhs.getType() > this->_type)
+	{
+		tmp = this->_factory->createOperand(rhs.getType(), this->_strVal);
+		return *tmp % rhs;
+	}
 	return this->_factory->createOperand(this->_type,
 			this->_toString((floating_modulo<float>(this->_value, rhs.toString()))));
 }
 template <>
 inline IOperand const *Operand<double>::operator%(IOperand const &rhs) const
 {
+	IOperand const 	*tmp;
+	if (rhs.getType() > this->_type)
+	{
+		tmp = this->_factory->createOperand(rhs.getType(), this->_strVal);
+		return *tmp % rhs;
+	}
 	return this->_factory->createOperand(this->_type,
 			this->_toString((floating_modulo<double>(this->_value, rhs.toString()))));
 }
