@@ -4,6 +4,8 @@
 
 int main(int argc, char **argv)
 {
+	bool parserError, lexerError;
+
 	std::fstream	fs;
 	if (argc < 2)
 	{
@@ -14,9 +16,16 @@ int main(int argc, char **argv)
 	Lexer	lexer(&fs);
 	lexer.lex();
 	lexer.disp();
+	lexerError = lexer.hasError();
 	Parser	parser;
 	parser.setTokenLst(lexer.getTokenLst());
 	parser.parse();
+	parserError = parser.hasError();
+	if (parserError || lexerError)
+	{
+		std::cerr << "Error, exiting..." << std::endl;
+		return 1;
+	}
 	parser.getSoftware().exec();
 	return 0;
 }

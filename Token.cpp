@@ -39,6 +39,10 @@ std::string	Token::getDataStr(const Data &data)
 			return "Close Bracket";
 		case Data::INS_ADD:
 			return "Instruction Add";
+		case Data::INS_PUSH:
+			return "Instruction PUSH";
+		case Data::INS_DUMP:
+			return "Instruction DUMP";
 		case Data::KEYWORD_INT32:
 			return "Keyword int32";
 		case Data::KEYWORD_INT16:

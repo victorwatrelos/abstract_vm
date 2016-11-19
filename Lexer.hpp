@@ -19,7 +19,8 @@ class Lexer
 		virtual ~Lexer(void);
 		std::istream	*getIst() const;
 		void			lex();
-		void			disp();
+		void			disp() const;
+		bool			hasError(void) const;
 		const std::vector<Token>	&getTokenLst();
 		static bool 			isDigits(const std::string &str);
 		static bool				isFloat(const std::string &str);
@@ -44,7 +45,7 @@ class Lexer
 		std::string			_buffer = "";
 		std::string			_filename = "STDIN";
 		bool				_firstOfLine;
-		bool				_has_error = false;
+		bool				_hasError = false;
 
 		static std::map<std::string, Token::Data>		_getLstInstruction(void);
 		static std::map<std::string, Token::Data>		_getLstKeyword(void);

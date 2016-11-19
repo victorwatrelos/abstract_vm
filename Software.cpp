@@ -35,10 +35,14 @@ Software	&Software::operator=(const Software &p) {
 
 void		Software::exec(void)
 {
-	for (auto ins : this->_program)
-	{
-		void (Software::* const f)(Instruction const &) = Software::_lstInsExec.at(ins.getIns());
-		((*this.*f))(ins);
+	try {
+		for (auto ins : this->_program)
+		{
+			void (Software::* const f)(Instruction const &) = Software::_lstInsExec.at(ins.getIns());
+			((*this.*f))(ins);
+		}
+	} catch (AvmRuntimeException &e) {
+		std::cerr << e.what() << std::endl;
 	}
 }
 
@@ -58,8 +62,7 @@ void	Software::_add(Instruction const &ins)
 	std::cout << "Add exec" << std::endl;
 	if (this->_stack.size() < 2)
 	{
-		std::cerr << "Add not enough item on stack" << std::endl;
-		throw AvmRuntimeException("Add: not enough item on stack");
+		throw AvmRuntimeException("Add: not enough item on stack", ins.getLine());
 	}
 	rhs = this->_stack.back();
 	this->_stack.pop_back();

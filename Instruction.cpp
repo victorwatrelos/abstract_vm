@@ -14,11 +14,12 @@ const Instruction::ins_to_string_t		Instruction::_insToString = Instruction::_cr
 
 
 Instruction::Instruction(void)
+	: _line(-1)
 {
 }
 
-Instruction::Instruction(IOperand const *param, InsName const &ins)
-	: _ins(ins), _param(param)
+Instruction::Instruction(IOperand const *param, InsName const &ins, int line)
+	: _ins(ins), _param(param), _line(line)
 {
 	if (!param)
 		return;
@@ -28,6 +29,11 @@ Instruction::Instruction(IOperand const *param, InsName const &ins)
 Instruction::InsName		Instruction::getIns(void) const
 {
 	return this->_ins;
+}
+
+int							Instruction::getLine(void) const
+{
+	return this->_line;
 }
 
 void						Instruction::disp(void) const
@@ -51,6 +57,7 @@ Instruction::~Instruction(void) {
 Instruction	&Instruction::operator=(const Instruction &p) {
 	this->_ins = p.getIns();
 	this->_param = p.getIOperand();
+	this->_line = p.getLine();
 	this->_hasParam = this->_param != nullptr;
 	return *this;
 }

@@ -13,6 +13,7 @@ SRC= main.cpp \
 	 AvmRuntimeException.cpp \
 	 AvmOverflowError.cpp \
 	 LexerError.cpp \
+	 ParserError.cpp \
 	 LineException.cpp \
 
 OBJ= $(SRC:.cpp=.o)

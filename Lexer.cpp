@@ -53,7 +53,12 @@ bool	Lexer::_isSeparator(const char &c)
 	return false;
 }
 
-void	Lexer::disp(void)
+bool	Lexer::hasError(void) const
+{
+	return this->_hasError;
+}
+
+void	Lexer::disp(void) const
 {
 	for (auto err : this->_errors)
 	{
@@ -220,7 +225,7 @@ void	Lexer::_processLine(const std::string &line)
 			}
 		} catch (LexerError &e) {
 			std::cerr << e.what() << std::endl;
-			throw LexerError("Lexical error(s)", -1);
+			this->_hasError = true;
 		}
 	}
 	this->_endOfToken();

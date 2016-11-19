@@ -41,7 +41,7 @@ void		Parser::setTokenLst(const std::vector<Token> &lstToken)
 	this->_tokenLst = lstToken;
 }
 
-IOperand const	*Parser::_getOpIns()
+IOperand const	*Parser::_getOpIns(int line)
 {
 	auto dist = std::distance(this->_currentPos, this->_tokenLst.end());
 	Token					paramToken;
@@ -49,28 +49,25 @@ IOperand const	*Parser::_getOpIns()
 
 	if (dist < 5)
 	{
-		std::cerr << "Not enouth token" << std::endl;
-		throw new std::exception;
+		throw ParserError("Not enough param", line);
 	}
 	this->_currentPos++;
 	paramToken = *this->_currentPos;
 	if (paramToken.getType() != Token::Type::KEYWORD)
 	{
-		std::cerr << "Not a number identifier" << std::endl;
-		throw new std::exception;
+		throw ParserError("Type name expected", line);
 	}
 	if ((*(this->_currentPos + 1)).getData() != Token::Data::OPEN_BRACKET
 			|| (*(this->_currentPos + 3)).getData() != Token::Data::CLOSE_BRACKET)
 	{
-		std::cerr << "Bad bracket" << std::endl;
-		throw new std::exception;
+		throw ParserError("Bracket invalid", line);
 	}
 	valueToken = *(this->_currentPos + 2);
 	if (valueToken.getType() != Token::Type::NUMBER)
 	{
-		std::cerr << "Not a number" << std::endl;
-		throw new std::exception;
+		throw ParserError("Parameter require a number", line);
 	}
+	this->_currentPos += 3;
 	return this->_factory.createOperand(Parser::_tokenDataToOp.at(paramToken.getData()), valueToken.getNumber());
 }
 
@@ -78,26 +75,47 @@ void		Parser::_processIns(Token const &tok)
 {
 	IOperand const			*op = nullptr;
 	Instruction::InsName	insName = this->_tokenDataToIns.at(tok.getData());
+	Instruction		ins;
 
 	if (InstructionInfo::hasParam(insName))
 	{
-		op = this->_getOpIns();
+		op = this->_getOpIns(tok.getLine());
 	}
-	Instruction		ins = Instruction(op, insName);
+   ins = Instruction(op, insName, tok.getLine());
 	this->_prog.addIns(ins);
+}
+
+void		Parser::_processFirstToken(void)
+{
+	Token	token;
+
+	token = *this->_currentPos;
+	if (token.getType() == Token::Type::INSTRUCTION) {
+		this->_processIns(token);
+	} else {
+		throw ParserError("Instruction expected", token.getLine());
+	}
+}
+
+bool		Parser::hasError(void) const
+{
+	return this->_hasError;
 }
 
 void		Parser::parse(void)
 {
-	std::cout << "Start parsing" << std::endl;
-	Token	token;
 	this->_currentPos = this->_tokenLst.begin();
 	for (;this->_currentPos != this->_tokenLst.end(); this->_currentPos++)
 	{
-		token = *this->_currentPos;
-		if (token.getType() == Token::Type::INSTRUCTION)
-		{
-			this->_processIns(token);
+		try {
+			this->_processFirstToken();
+		} catch (ParserError &e) {
+			if (e.getLine() > this->_lastLineError)
+			{
+				this->_lastLineError = e.getLine();
+				std::cerr << e.what() << std::endl;
+				this->_hasError = true;
+			}
 		}
 	}
 	this->_prog.disp();
