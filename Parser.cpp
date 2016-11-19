@@ -129,7 +129,6 @@ void		Parser::parse(void)
 			this->_hasError = true;
 		}
 	}
-	this->_prog.disp();
 }
 
 Parser    &Parser::operator=(const Parser &p) {

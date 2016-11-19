@@ -33,9 +33,6 @@
 			Token(const std::string &number, const std::string &filename, int line);
 			Token &operator=(const Token &p);
 			virtual ~Token(void);
-			void	disp();
-			static std::string		getTypeStr(const Type &type);
-			static std::string		getDataStr(const Data &data);
 			Type				getType(void) const;
 			Data				getData(void) const;
 			std::string			getFilename(void) const;

@@ -1,7 +1,8 @@
 #include "Lexer.hpp"
 #include "Parser.hpp"
-# include "STDInReader.hpp"
-#include <fstream>
+#include "STDInReader.hpp"
+#include "OperandFactory.hpp"
+# include <fstream>
 
 int main(int argc, char **argv)
 {
@@ -27,9 +28,12 @@ int main(int argc, char **argv)
 	parserError = parser.hasError();
 	if (parserError || lexerError)
 	{
+		delete fs;
+		OperandFactory::deleteOp();
 		std::cerr << "Error, exiting..." << std::endl;
 		return 1;
 	}
 	parser.getSoftware().exec();
+	OperandFactory::deleteOp();
 	return 0;
 }

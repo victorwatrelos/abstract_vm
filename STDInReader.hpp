@@ -5,6 +5,8 @@
 # include <istream>
 # include <sstream>
 # include <iostream>
+# include "Lexer.hpp"
+# include "Parser.hpp"
 
 class STDInReader
 {
@@ -17,5 +19,7 @@ class STDInReader
 		std::istream		*getIStream(void);
 	private:
 		std::stringstream	_ss;
+		bool				_testLine(std::string const &line);
+
 };
 #endif

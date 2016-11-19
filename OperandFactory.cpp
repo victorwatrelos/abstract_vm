@@ -12,6 +12,7 @@ OperandFactory::lstOp_t		OperandFactory::getLstOp(void)
 	return map;
 }
 
+std::vector<IOperand const *>	OperandFactory::_lstIop = std::vector<IOperand const *>();
 
 const	OperandFactory::lstOp_t		OperandFactory::_lstOp = OperandFactory::getLstOp();
 
@@ -26,6 +27,14 @@ OperandFactory::~OperandFactory(void) {
 
 }
 
+void			OperandFactory::deleteOp(void)
+{
+	for (auto op : OperandFactory::_lstIop)
+	{
+		delete op;
+	}
+}
+
 OperandFactory	&OperandFactory::operator=(const OperandFactory &p) {
 	(void)p;
 	return *this;
@@ -35,7 +44,9 @@ IOperand const * OperandFactory::createOperand( eOperandType type, std::string c
 {
 	IOperand const	*(OperandFactory::*f)(std::string const &value) const;
 	f = this->_lstOp.at(type);
-	return (*this.*f)(value);
+	IOperand const	*iop = (*this.*f)(value);
+	OperandFactory::_lstIop.push_back(iop);
+	return iop;
 }
 
 IOperand const *	OperandFactory::_createInt8Op(const std::string &val) const

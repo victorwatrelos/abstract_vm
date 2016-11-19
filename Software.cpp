@@ -28,7 +28,6 @@ Software::Software(const Software &obj) {
 }
 
 Software::~Software(void) {
-
 }
 
 void		Software::addIns(Instruction ins)
@@ -52,22 +51,12 @@ void		Software::exec(void)
 				break ;
 		}
 		if (!this->_isFinished )
-			std::cerr << "Runtime exception - Program not finished with exit instruction" << std::endl;
+			std::cerr << "\033[1;31mRuntime exception - Program not finished with exit instruction\033[0m" << std::endl;
 	} catch (AvmRuntimeException &e) {
 		std::cerr << e.what() << std::endl;
 	} catch (AvmOverflowError &e) {
 		std::cerr << e.what() << std::endl;
 	}
-}
-
-void		Software::disp(void)
-{
-	/*
-	for (auto ins : this->_program)
-	{
-		ins.disp();
-	}
-	*/
 }
 
 void	Software::_add(Instruction const &ins)
@@ -213,6 +202,7 @@ void	Software::_print(Instruction const &ins)
 
 void	Software::_exit(Instruction const &ins)
 {
+	(void)ins;
 	this->_isFinished = true;
 }
 

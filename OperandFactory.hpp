@@ -1,10 +1,11 @@
 #ifndef OPERANDFACTORY_HPP
 # define OPERANDFACTORY_HPP
 
-# include <map>
-# include <limits>
 # include "IOperand.hpp"
 # include "AvmOverflowError.hpp"
+# include <vector>
+# include <map>
+# include <limits>
 
 class OperandFactory
 {
@@ -15,6 +16,7 @@ class OperandFactory
 		OperandFactory &operator=(const OperandFactory &p);
 		virtual ~OperandFactory(void);
 		IOperand const *createOperand(eOperandType type, std::string const & value) const;
+		static void			deleteOp(void);
 	private:
 		static const lstOp_t	_lstOp;	
 
@@ -24,5 +26,6 @@ class OperandFactory
 		IOperand const *_createFloatOp(const std::string &val) const;
 		IOperand const *_createDoubleOp(const std::string &val) const;
 		static lstOp_t	getLstOp(void);
+		static std::vector<IOperand const *>	_lstIop;
 };
 #endif

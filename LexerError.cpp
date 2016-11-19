@@ -8,5 +8,6 @@ LexerError::LexerError(std::string const &str, int lineNb)
 
 const char	*LexerError::what(void) const throw()
 {
-	return ("Lexer error (line: " + std::to_string(LineException::getLine()) + ") - "  + std::logic_error::what()).c_str();
+	return ("\033[1;33mLexer error (line: "
+			+ std::to_string(LineException::getLine()) + ") - "  + std::logic_error::what() + "\033[0m").c_str();
 }

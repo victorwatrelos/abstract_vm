@@ -31,7 +31,7 @@ class Parser
 		std::vector<Token>::iterator	_currentPos;
 		Software			_prog;
 		OperandFactory		_factory;
-		bool				_hasError;
+		bool				_hasError = false;
 		int					_lastLineError = -1;
 
 		IOperand const	*_getOpIns(int line);

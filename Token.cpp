@@ -30,54 +30,6 @@ std::string const	&Token::getNumber(void) const
 	return this->_number;
 }
 
-std::string	Token::getDataStr(const Data &data)
-{
-	switch (data) {
-		case Data::OPEN_BRACKET:
-			return "Open Bracket";
-		case Data::CLOSE_BRACKET:
-			return "Close Bracket";
-		case Data::INS_ADD:
-			return "Instruction Add";
-		case Data::INS_PUSH:
-			return "Instruction PUSH";
-		case Data::INS_DUMP:
-			return "Instruction DUMP";
-		case Data::KEYWORD_INT32:
-			return "Keyword int32";
-		case Data::KEYWORD_INT16:
-			return "Keyword int16";
-		case Data::KEYWORD_INT8:
-			return "Keyword int8";
-		case Data::NONE:
-			return "NONE";
-	};
-	return "Data Unknown";
-}
-
-std::string	Token::getTypeStr(const Type &type)
-{
-	switch (type) {
-		case Type::INSTRUCTION:
-			return "Instruction";
-		case Type::BRACKET:
-			return "Bracket";
-		case Type::KEYWORD:
-			return "Keyword";
-		case Type::NUMBER:
-			return "Number";
-		case Type::EOL:
-			return "End Of Line";
-	};
-	return "Type Unknown";
-}
-
-void	Token::disp(void)
-{
-	std::cout << "Type: " << this->getTypeStr(this->_type)
-		<< " Data: " << this->getDataStr(this->_data) << std::endl;
-}
-
 Token::Type	Token::getType(void) const
 {
 	return this->_type;

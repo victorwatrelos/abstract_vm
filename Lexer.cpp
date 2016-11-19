@@ -97,13 +97,15 @@ bool	Lexer::isFloat(const std::string &str) {
 	std::istringstream iss(str);
 	float f;
 	iss >> std::noskipws >> f;
-	return iss.eof() && !iss.fail(); 
+	bool res = iss.eof() && !iss.fail(); 
+	iss.clear();
+	iss.str("");
+	return res;
 }
 
 void	Lexer::_addNumberFloatToken(const std::string &elem)
 {
 	try {
-		double res = std::stod(elem);
 		this->_lstToken.push_back(Token(elem, this->_filename, this->_currentLine));
 	} catch (const std::invalid_argument &e) {
 		throw LexerError("Invalid number: " + elem, this->_currentLine);
@@ -114,8 +116,6 @@ void	Lexer::_addNumberFloatToken(const std::string &elem)
 
 void	Lexer::_addNumberIntToken(const std::string &elem)
 {
-	int		res;
-
 	try {
 		this->_lstToken.push_back(Token(elem, this->_filename, this->_currentLine));
 	} catch (const std::invalid_argument &e) {
@@ -163,7 +163,7 @@ void	Lexer::_addToken(const std::string &elem)
 
 bool Lexer::isDigits(const std::string &str)
 {
-    return std::all_of(str.begin(), str.end(), ::isdigit); // C++11
+    return std::all_of(str.begin(), str.end(), ::isdigit);
 }
 
 Token	Lexer::_getToken(const Token::Type &type, const Token::Data &data) const

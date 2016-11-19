@@ -8,5 +8,7 @@ ParserError::ParserError(std::string const &str, int lineNb)
 
 const char	*ParserError::what(void) const throw()
 {
-	return ("Parser error (line: " + std::to_string(LineException::getLine()) + ") - "  + std::logic_error::what()).c_str();
+	return ("\033[1;35mParser error (line: "
+			+ std::to_string(LineException::getLine()) + ") - "  + std::logic_error::what()
+			+ "\033[0m").c_str();
 }

@@ -1,5 +1,5 @@
 CC= clang++
-FLAGS=-Wall -Wextra -std=c++14 -g
+FLAGS=-Wall -Wextra -std=c++14 -Werror -O3
 NAME_BIN= avm
 
 SRC= main.cpp \
